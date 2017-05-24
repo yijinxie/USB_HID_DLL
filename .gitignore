@@ -41,3 +41,6 @@ ipch/*
 *.exp
 *.zip
 *.sdf
+.vs/*
+*.iobj
+*.ipdb

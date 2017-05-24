@@ -25,3 +25,5 @@ public:
 
 extern "C" USB_API void write(char *data);
 extern "C" USB_API void read(char *data);
+extern "C" USB_API void open(UCHAR index);
+extern "C" USB_API UCHAR get_device_number(void);

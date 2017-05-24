@@ -48,9 +48,4 @@
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="hid.lib">
-      <Filter>资源文件</Filter>
-    </Library>
-  </ItemGroup>
 </Project>

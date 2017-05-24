@@ -31,8 +31,16 @@ USB_API void read(char *data)
 	m_Hid.Read(b);
 	CSCHAR(data,b,64);
 }
-
-
+USB_API void open(UCHAR index)
+{
+	BYTE* b = new BYTE[64];
+	//CBYTE(b,"CONF:VOLT:DC D0,L\n",64);
+	if (!m_Hid.Open(index)) printf("Open device number->%d fail", index);
+}
+USB_API UCHAR get_device_number(void)
+{
+	return m_Hid.ExistDevice;
+}
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -45,7 +53,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		if (load){
 			return false;
 		}
-		if (m_Hid.Open(0x003f,0x04d8)){
+		m_Hid.Scan(0x003f, 0x04d8);
+		if (m_Hid.Open(0)){
 			//HANDLE hThread1 = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)USBRead, NULL, 0, &dwGenericThread);
 			/*BYTE* b=new BYTE[64];
 			CBYTE(b,"CONF:VOLT:DC D0,L\n",64);
@@ -57,6 +66,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		}
 		else
 		{
+			printf("Loading fail.\n");
 			return FALSE;
 		}
 		break;

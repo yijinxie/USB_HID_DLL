@@ -13217,15 +13217,9 @@ READ:REGI 0x00,0x16
 CONF:REGI 0x00,0x16,0x00'''
 class USB():
     def __init__(self):
-        import platform
-        bits = platform.architecture()[0]
-        print bits
         try:
             self.dll = ctypes.cdll.LoadLibrary('usb.dll')
-            # if '32bit' in bits:
-                # self.dll = ctypes.cdll.LoadLibrary('usb_x86.dll')
-            # else:
-                # self.dll = ctypes.cdll.LoadLibrary('usb_x64.dll')
+            self.dll.get_device_number.restype = ctypes.c_ubyte
         except:
             import traceback
             traceback.print_exc()
@@ -13248,15 +13242,29 @@ class USB():
         rs = self.read()
         return rs
     
+    def open(self, index):
+        self.dll.open(ctypes.c_ubyte(index))
+    
+    def get_exist_dev(self):
+        return self.dll.get_device_number()
+    
     def write_blocks(self, s):
         cfs = s.split('\n')
         for i in cfs:
             self.write(i+'\n')
 
-# if __name__ == '__main__':
-dev = USB()
-if dev.have_dev:
-    # dev.write_blocks(conf_91391)
-    # dev.write_blocks(conf_91392)
-    # dev.write_blocks(conf_9516)
-    dev.write_blocks(all_reg)
+if __name__ == '__main__':
+    dev = USB()
+    print dev.get_exist_dev()
+    exit()
+    if dev.have_dev:
+        # dev.write_blocks(conf_91391)
+        # dev.write_blocks(conf_91392)
+        # dev.write_blocks(conf_9516)
+        dev.write_blocks(all_reg)
+    dev.open(1)
+    if dev.have_dev:
+        # dev.write_blocks(conf_91391)
+        # dev.write_blocks(conf_91392)
+        # dev.write_blocks(conf_9516)
+        dev.write_blocks(all_reg)
