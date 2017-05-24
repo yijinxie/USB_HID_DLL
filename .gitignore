@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+usb/Debug/*
+*.tlog
+Debug/*
+ipch/*
+*.log
+*.pdb
+*.lastbuildstate
+*.exp
+*.zip
+*.sdf
