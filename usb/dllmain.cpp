@@ -50,10 +50,13 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	{
 	case DLL_PROCESS_ATTACH:
 		printf("Loading USB Device.\n");
-		if (load){
-			return false;
+		
+		if (m_Hid.Scan(0x003f, 0x04d8)) printf("Find %d devices.\n", m_Hid.ExistDevice);
+		else printf("Cannot find any device!\n");
+		
+		if (load) {
+			return FALSE;
 		}
-		m_Hid.Scan(0x003f, 0x04d8);
 		if (m_Hid.Open(0)){
 			//HANDLE hThread1 = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)USBRead, NULL, 0, &dwGenericThread);
 			/*BYTE* b=new BYTE[64];

@@ -13218,7 +13218,7 @@ CONF:REGI 0x00,0x16,0x00'''
 class USB():
     def __init__(self):
         try:
-            self.dll = ctypes.cdll.LoadLibrary('usb.dll')
+            self.dll = ctypes.cdll.LoadLibrary('Release/usb.dll')
             self.dll.get_device_number.restype = ctypes.c_ubyte
         except:
             import traceback
@@ -13256,12 +13256,13 @@ class USB():
 if __name__ == '__main__':
     dev = USB()
     print dev.get_exist_dev()
-    exit()
+    # exit()
     if dev.have_dev:
         # dev.write_blocks(conf_91391)
         # dev.write_blocks(conf_91392)
         # dev.write_blocks(conf_9516)
         dev.write_blocks(all_reg)
+    # exit()
     dev.open(1)
     if dev.have_dev:
         # dev.write_blocks(conf_91391)

@@ -8,8 +8,9 @@ GHid::GHid(void)
 	hRead = INVALID_HANDLE_VALUE;
 	hWrite = INVALID_HANDLE_VALUE;
 	hDevHandle = INVALID_HANDLE_VALUE;
-	PSP_DEVICE_INTERFACE_DETAIL_DATA*	pDevDetailData;
-	pDevDetailData = (PSP_DEVICE_INTERFACE_DETAIL_DATA*)malloc(10 * sizeof(PSP_DEVICE_INTERFACE_DETAIL_DATA));
+	//PSP_DEVICE_INTERFACE_DETAIL_DATA*	pDevDetailData;
+	//pDevDetailData = (PSP_DEVICE_INTERFACE_DETAIL_DATA*)malloc(10 * sizeof(PSP_DEVICE_INTERFACE_DETAIL_DATA));
+	pDevDetailData = new PSP_DEVICE_INTERFACE_DETAIL_DATA[64];
 	ExistDevice = 0;
 }
 
@@ -39,6 +40,7 @@ BOOL GHid::Open(UCHAR index)
 	HidD_SetNumInputBuffers(hRead, 512);
 	if ((hWrite != INVALID_HANDLE_VALUE) && (hRead != INVALID_HANDLE_VALUE)) return TRUE;
 	return FALSE;
+	//return TRUE;
 }
 BOOL GHid::Scan(WORD Pid_Open, WORD Vid_Open)
 {
@@ -72,7 +74,7 @@ BOOL GHid::Scan(WORD Pid_Open, WORD Vid_Open)
 			MemberIndex,
 			&DevInterfaceData);
 		if (Result == FALSE) {
-			printf("Could not find the device!\n");
+			//printf("Could not find the device!\n");
 			break;											//如果获取信息失败，则说明设备已经查找完毕，退出循环。	
 		}
 		MemberIndex++;														//将MemberIndex指向下一个设备
@@ -124,6 +126,7 @@ BOOL GHid::Scan(WORD Pid_Open, WORD Vid_Open)
 												//如果获取成功，则将属性中的VID、PID以及设备版本号与我们需要的
 												//进行比较，如果都一致的话，则说明它就是我们要找的设备。
 												//printf("VID=%d,PID=%d,Size=%d\n",DevAttributes.VendorID,DevAttributes.ProductID,DevAttributes.VersionNumber,DevAttributes.Size);
+			printf("VendorID:%04X;ProductID:%04X\n", DevAttributes.VendorID, DevAttributes.ProductID);
 			if (DevAttributes.VendorID == Vid_Open&&DevAttributes.ProductID == Pid_Open)
 			{
 				//HidD_SetNumInputBuffers(hDevHandle,512);
@@ -154,10 +157,11 @@ BOOL GHid::Scan(WORD Pid_Open, WORD Vid_Open)
 				CloseHandle(hDevHandle);
 			}
 		}
-		free(pDevDetailData);
+		//free(pDevDetailData_local);
 	}
 	CloseHandle(hDevHandle);
-	return FALSE;
+	if (ExistDevice > 0) return TRUE;
+	else return FALSE;
 }
 void GHid::Close()
 {
