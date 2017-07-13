@@ -130,7 +130,7 @@ BOOL GHid::Scan(WORD Pid_Open, WORD Vid_Open)
 			if (DevAttributes.VendorID == Vid_Open&&DevAttributes.ProductID == Pid_Open)
 			{
 				//HidD_SetNumInputBuffers(hDevHandle,512);
-				CloseHandle(hDevHandle);
+				
 				//hWrite = CreateFile(pDevDetailData->DevicePath,
 				//	GENERIC_WRITE,
 				//	FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -150,6 +150,8 @@ BOOL GHid::Scan(WORD Pid_Open, WORD Vid_Open)
 				//return TRUE;
 				pDevDetailData[ExistDevice] = pDevDetailData_local;
 				ExistDevice++;
+				printf("ExistDevice=%d", ExistDevice);
+				CloseHandle(hDevHandle);
 			}
 
 			else

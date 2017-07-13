@@ -13226,7 +13226,7 @@ class USB():
             self.have_dev = False
         self.have_dev = True
 
-    def read(self):
+    def pure_read(self):
         # c_s = ctypes.c_char_p(s)
         # dll.write(c_s)
         rc_s = ctypes.create_string_buffer(64)
@@ -13234,13 +13234,19 @@ class USB():
         # return repr(rc_s.raw)
         return rc_s.raw
 
+    def read(self, s):
+        c_s = ctypes.c_char_p(s)
+        if not self.dll.write(c_s):
+            time.sleep(0.1)
+            self.dll.write(c_s)
+        rs = self.pure_read()
+        return rs
+    
     def write(self, s):
         c_s = ctypes.c_char_p(s)
         if not self.dll.write(c_s):
             time.sleep(0.1)
             self.dll.write(c_s)
-        rs = self.read()
-        return rs
     
     def open(self, index):
         self.dll.open(ctypes.c_ubyte(index))
