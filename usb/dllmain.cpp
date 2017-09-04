@@ -16,12 +16,12 @@ void CSCHAR(char* a,BYTE* buf,int len){
 	}
 }
 // 这是导出函数的一个示例。
-USB_API void write(char *data)
+USB_API BOOL write(char *data)
 {
 	//m_Hid.Write(data);
 	BYTE* b=new BYTE[64];
 	CBYTE(b,data,64);
-	m_Hid.Write(b);
+	return m_Hid.Write(b);
 }
 
 USB_API void read(char *data)
